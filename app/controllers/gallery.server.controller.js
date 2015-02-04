@@ -9,10 +9,10 @@ var mongoose = require('mongoose'),
 	fs = require('fs'),
 	path = require('path'),
 	gm = require('gm'),
-	// resources = '/home/photo/',
- // 	shortPhotoDir = 'picture/',
-	resources = './resources/',
-	shortPhotoDir = 'photos',
+	resources = '/home/photo/',
+ 	shortPhotoDir = 'picture/',
+	// resources = './resources/',
+	// shortPhotoDir = 'photos',
 	fullPhotoDir = path.join(resources ,shortPhotoDir),
 	shortThumbDir = 'thumb/',
 	fullThumbDir = path.join(resources, shortThumbDir),
@@ -24,7 +24,7 @@ function handleError(err){
 
 function crop_image(srcPath, dstPath){
 	gm(srcPath)
-		.resize(500, 500)
+		.resize(1000, 1000)
 		.autoOrient()
 		.write(dstPath, function(err){
 			if (err)

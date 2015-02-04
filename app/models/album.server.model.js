@@ -72,7 +72,7 @@ AlbumSchema.post('save', function (next) {
         AlbumModel.findByIdAndUpdate(self.parent, {$addToSet: {childs: self._id}}, function(err, parent) {
             if (err) return console.log('contact addMsg error: ' + err);
             console.log('################ parent album ############');
-            console.log(parent);
+            console.log(parent.name);
         });
     }
 }) ;

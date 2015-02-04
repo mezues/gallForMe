@@ -59,7 +59,7 @@ var AlbumModel = mongoose.model('Album');
 
 PhotoSchema.pre('save', function (next) {
     var self = this;
-    PhotoModel.find({name : self.name}, function (err, photos) {
+    PhotoModel.find({path : self.path}, function (err, photos) {
         if (!photos.length){
             next();
         }
@@ -72,7 +72,7 @@ PhotoSchema.post('save', function (next) {
         AlbumModel.findByIdAndUpdate(self.parent, {$addToSet: {photos: self._id}}, function(err, parent) {
             if (err) return console.log('contact addMsg error: ' + err);
         console.log('$$$$$$$$$$$$$$$   photo parent album $$$$$$$$$$$$$$$');
-        console.log(parent);
+        console.log(parent.name);
         });
     }
 }) ;
