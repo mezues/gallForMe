@@ -1,0 +1,23 @@
+.photos-btn {
+    background-color: #4D4955;
+    opacity: 0.4;
+    cursor: pointer;
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 4px;
+    margin-top: 2px;
+    vertical-align: top;
+    height: 100%;
+}
+
+
+.image-example {
+  width: 300px;
+  height: 200px;
+}
+.image-example img {
+  width: 100%;
+  height: auto;
+}
+.source {font-size: 12px}

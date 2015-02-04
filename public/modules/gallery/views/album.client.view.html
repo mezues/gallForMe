@@ -1,0 +1,59 @@
+<section data-ng-controller="GalleryController">
+<button ng-click="createDb()">
+  update Db
+</button>
+
+<form name="myForm" class="form-horizontal">
+
+	admin : <input type="checkbox" name="userCb" ng-model="admin" ng-change="addImageToUser(user, photo)">
+</form>
+	<div ng-hide="!albums.length">
+		<div class="page-header">
+			<h1>Album</h1>
+		</div>
+		<ul class="row" data-ng-init="findAlbums()">
+			<li ng-repeat="album in albums" class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+				<a href= '/#!/gallery/album/{{album._id}}' class="thumbnail">
+					{{album.prettyName}}
+					<img ng-src="{{album.thumb}}" alt={{album.prettyName}} />
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div data-ng-init="findPhotos()" ng-hide="!photos.length">
+		<div class="page-header">
+			<h1>Photo</h1>
+		</div>
+		<ul class="row" >
+			<li ng-repeat="photo in photos" class="col-lg-2 col-md-2 col-sm-3 col-xs-4">
+				<flip  flip-side="{{side}}" ng-right-click="toggle(photo)">
+					<flip-front>
+						<a href= '/#!/gallery/photo/{{photo.parent}}' class="thumbnail">
+						{{photo.name}}
+						<img ng-src="{{photo.thumbPath}}" alt={{photo.prettyName}} />
+						</a>
+					</flip-front>
+					<flip-back>
+						<form name="myForm" class="form-horizontal">
+							<button ng-click="download(photo)">
+							Télécharger
+							</button>
+						</form>
+					</flip-back>
+				</flip>
+				<div ng-init="getUsers(photo)">
+					<div ng-hide="!admin">
+						<form name="myForm" class="form-horizontal">
+							<li ng-repeat="user in users">
+								<div ng-hide="!user.name">
+									{{user.name}} : <input type="checkbox" name="userCb" ng-model="photouser[photo._id][user.id]" ng-change="addImageToUser(user, photo)">
+								</div>
+							</li>
+						</form>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</section>
