@@ -1,41 +1,13 @@
-<section data-ng-controller="GalleryController" data-ng-init="findPhoto()">
-<!-- 	<div class="page-header">
-		{{photo.name}}
-	</div>
-	<table>
-		<tr>
-			<td>
-				<button class="photos-btn" ng-click="prevPhoto(photo._id)" ng-model="prevbtn" ng-disabled="prevDesable">previous</button>
-			</td>
-			<td>
-				<img ng-src="{{photo.thumbPath}}" class="img-responsive" alt="{{photo.name}}" />
-			</td>
-			<td>
-				<button class="photos-btn" ng-click="nextPhoto(photo._id)" ng-model="nextbtn" ng-disabled="nextDesable">next</button>
-			</td>
-		</tr>
-	</table>
-
-	<div ng-init="getUsers(photo)">
-
-		<form name="myForm" class="form-horizontal">
-			<li ng-repeat="user in users">
-				<div ng-hide="!user.name">
-					{{user.name}} : <input type="checkbox" name="userCb" ng-model="user.isSelected" ng-change="addImageToUser(user)" id="ng">
-				</div>
-			</li>
-		</form>
-
-	</div> -->
+<section data-ng-controller="PhotoController" data-ng-init="findPhoto()">
 	<div>
-        <carousel interval="myInterval">
-            <slide ng-repeat="photo in photos" active="slide.active">
-                <img ng-src="{{photo.thumbPath}}" style="width:100%">
-                <div class="carousel-caption">
-                    <h4>{{photo.name}}</h4>
-                </div>
-            </slide>
-        </carousel>
-    </div>
+		<carousel interval="myInterval">
+			<slide ng-repeat="photo in photos" active="slide.active">
+				<img ng-src="{{photo.thumbPath}}" style="width:100%">
+				<div class="carousel-caption">
+					<h4>{{photo.name}}</h4>
+				</div>
+			</slide>
+		</carousel>
+	</div>
 
 </section>

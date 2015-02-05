@@ -1,13 +1,17 @@
 'use strict';
 
-angular.module('gallery').controller('GalleryController',['$scope', '$stateParams', '$location', '$http', '$animate',
+angular.module('gallery').controller('AlbumController',['$scope', '$stateParams', '$location', '$http', '$animate',
 	function($scope, $stateParams, $location, $http, $animate){
-		var albums;
+
 		$scope.photouser={};
 		$scope.albumuser={};
 		$scope.admin = false;
 		$scope.myInterval = 3000;
 		$scope.side = 'front';
+		$animate.enabled(true);
+
+		$scope.users=[];
+
 
 		$scope.download = function(photo) {
 			$http.get('/photoDownload/' + photo._id).success(function(data){
@@ -43,7 +47,7 @@ document.location = 'data:application/csv;charset=utf-8,'+encodeURI(data);
 								$scope.albumuser[album._id][user.id] = false;
 							}
 						}
-				}
+					}
 				});
 			});
 		};
@@ -51,7 +55,6 @@ document.location = 'data:application/csv;charset=utf-8,'+encodeURI(data);
 
 		$scope.findPhotos = function() {
 
-			$animate.enabled(true);
 			$http.get('users').success(function(users) {
 				$scope.users = users;
 				$http.get('/photos/' + $stateParams.albumId).success(function(photos){
@@ -67,30 +70,8 @@ document.location = 'data:application/csv;charset=utf-8,'+encodeURI(data);
 								$scope.photouser[photo._id][user.id] = false;
 							}
 						}
-				}
+					}
 				});
-			});
-		};
-		$scope.findPhoto = function() {
-
-			$animate.enabled(false);
-			$http.get('users').success(function(users) {
-				$scope.users = users;
-				$http.get('/photos/' + $stateParams.photoId).success(function(photos){
-					$scope.photos = photos;
-				});
-			});
-		};
-
-		$scope.nextPhoto = function(photoName){
-			$http.get('/photoNext/' + photoName).success(function(photo){
-				$scope.photo = photo;
-			});
-		};
-
-		$scope.prevPhoto = function(photoName){
-			$http.get('/photoPrev/' + photoName).success(function(photo){
-				$scope.photo = photo;
 			});
 		};
 
