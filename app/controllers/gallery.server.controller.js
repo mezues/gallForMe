@@ -9,14 +9,14 @@ var mongoose = require('mongoose'),
 	fs = require('fs'),
 	path = require('path'),
 	gm = require('gm'),
-	resources = '/home/photo/',
- 	shortPhotoDir = 'picture/',
-	// resources = './resources/',
-	// shortPhotoDir = 'photos',
-	fullPhotoDir = path.join(resources ,shortPhotoDir),
-	shortThumbDir = 'thumb/',
-	fullThumbDir = path.join(resources, shortThumbDir),
+	config = require('../../config/config'),
 	ExifImage = require('exif').ExifImage;
+
+	var resources = config.resources;
+	var shortPhotoDir = config.photoDir;
+	var shortThumbDir = config.thumbDir;
+	var fullPhotoDir = path.join(resources ,shortPhotoDir);
+	var fullThumbDir = path.join(resources, shortThumbDir);
 
 function handleError(err){
 	console.log(err);

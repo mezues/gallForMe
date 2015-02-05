@@ -3,11 +3,17 @@
 module.exports = {
 	app: {
 		title: 'Photo Gallery',
-		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
-		keywords: 'mongodb, express, angularjs, node.js, mongoose, passport'
+		description: 'personnal web site of Mathieu Leturcq',
+		keywords: 'mathieu, leturcq'
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
+	// resources: '/home/photo/',
+	// photoDir: 'picture',
+	resources: './resources/',
+	photoDir: 'photos',
+	thumbDir: 'thumb',
+
 	// The secret should be set to a non-guessable string that
 	// is used to compute a session hash
 	sessionSecret: 'MEAN',
