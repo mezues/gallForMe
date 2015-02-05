@@ -8,27 +8,29 @@ var mongoose = require('mongoose'),
 	Weatherforcast = mongoose.model('Weatherforcast'),
 	http = require('http'),
 	_ = require('lodash');
+var parseString = require('xml2js').parseString;
 
-
-exports.weather = function(req, res1) {
+exports.weather = function(req, res) {
 	var options = {
-  host: 'aviationweather.gov',
-  port: 80,
-  path: '/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=LFRB&hoursBeforeNow=2'
-};
+		host: 'aviationweather.gov',
+		port: 80,
+		path: '/adds/dataserver_current/httpparam?dataSource=metars&requestType=retrieve&format=xml&stationString=LFRB&hoursBeforeNow=2'
+	};
 
-http.get(options, function(res) {
-  var body = '';
-  res.on('data', function(chunk) {
-    body += chunk;
-  });
-  res.on('end', function() {
-  	res1.jsonp(body);
-  });
-}).on('error', function(e) {
-  console.log("Got error: " + e.message);
-});
-}
+	http.get(options, function(responce) {
+		var body = '';
+		responce.on('data', function(chunk) {
+			body += chunk;
+		});
+		responce.on('end', function() {
+			parseString(body, function (err, result) {
+				res.jsonp(result.response.data[0].METAR);
+			});
+		});
+	}).on('error', function(e) {
+		console.log('Got error: ' + e.message);
+	});
+};
 
 /**
  * Create a Weatherforcast

@@ -1,8 +1,55 @@
 <section data-ng-controller="WeatherforcastsController">
-    <div class="page-header">
-        <h1>New Weatherforcast</h1>
-    </div>
-    <div class="col-md-12" data-ng-init="getWeather()">
-        {{weather}}
-    </div>
+	<div class="page-header">
+		<h1>Station {{station_id}}</h1>
+	</div>
+	<div data-ng-init="getWeather()">
+		<div class="row">
+			<div class="col-xs-6 col-md-4 text-center">
+				<img degrees='windAngle0' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				<img degrees='windAngle1' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				<img degrees='windAngle2' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-4 text-center">
+				{{obsTime0}}
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				{{obsTime1}}
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				{{obsTime2}}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-6 col-md-4 text-center">
+				{{windSpeed0}}kt
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				{{windSpeed1}}kt
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				{{windSpeed2}}kt
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-6 col-md-4 text-center">
+				{{temperature0}}°C
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				{{temperature1}}°C
+			</div>
+			<div class="col-xs-6 col-md-4 text-center">
+				{{temperature2}}°C
+			</div>
+		</div>
+	</div>
+
+
 </section>
