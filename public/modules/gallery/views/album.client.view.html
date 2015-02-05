@@ -1,12 +1,8 @@
 <section data-ng-controller="GalleryController">
-<button ng-click="createDb()">
-  update Db
-</button>
 
-<form name="myForm" class="form-horizontal">
-
-	admin : <input type="checkbox" name="userCb" ng-model="admin" ng-change="addImageToUser(user, photo)">
-</form>
+	<form name="myForm" class="form-horizontal">
+		admin : <input type="checkbox" name="userCb" ng-model="admin">
+	</form>
 	<div ng-hide="!albums.length">
 		<div class="page-header">
 			<h1>Album</h1>
@@ -17,6 +13,15 @@
 					{{album.prettyName}}
 					<img ng-src="{{album.thumb}}" alt={{album.prettyName}} />
 				</a>
+				<div ng-hide="!admin">
+					<form name="myForm" class="form-horizontal">
+						<li ng-repeat="user in users">
+							<div ng-hide="!user.name">
+								{{user.name}} : <input type="checkbox" name="userCb" ng-model="albumuser[album._id][user.id]" ng-change="addAlbumToUser(user, album)">
+							</div>
+						</li>
+					</form>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -42,16 +47,14 @@
 						</form>
 					</flip-back>
 				</flip>
-				<div ng-init="getUsers(photo)">
-					<div ng-hide="!admin">
-						<form name="myForm" class="form-horizontal">
-							<li ng-repeat="user in users">
-								<div ng-hide="!user.name">
-									{{user.name}} : <input type="checkbox" name="userCb" ng-model="photouser[photo._id][user.id]" ng-change="addImageToUser(user, photo)">
-								</div>
-							</li>
-						</form>
-					</div>
+				<div ng-hide="!admin">
+					<form name="myForm" class="form-horizontal">
+						<li ng-repeat="user in users">
+							<div ng-hide="!user.name">
+								{{user.name}} : <input type="checkbox" name="userCb" ng-model="photouser[photo._id][user.id]" ng-change="addImageToUser(user, photo)">
+							</div>
+						</li>
+					</form>
 				</div>
 			</li>
 		</ul>

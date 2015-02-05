@@ -59,7 +59,7 @@ exports.me = function(req, res) {
 *
 */
 exports.list = function(req, res) {
-	if(req.user.roles.indexOf('admin') > -1){
+	if(req.user && req.user.roles.indexOf('admin') > -1){
 		User.find().exec(function(err, users) {
 			if (err) {
 				return res.status(400).send({

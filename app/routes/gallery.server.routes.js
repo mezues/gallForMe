@@ -7,6 +7,10 @@ var gallery = require('../../app/controllers/gallery.server.controller');
 	app.route('/albumslist').post(gallery.albumlist);
 	app.route('/albums/:albumId').get(gallery.getAlbums);
 	app.route('/albums/').get(gallery.getAlbums);
+
+	app.route('/album/addUser').put(gallery.addUserAlbum);
+	app.route('/album/delUser').put(gallery.delUserAlbum);
+
 	app.route('/photos/:albumId').get(gallery.getPhotos);
 	app.route('/photos/').get(gallery.getPhotos);
 	app.route('/photo/:photoId').get(gallery.getPhoto);

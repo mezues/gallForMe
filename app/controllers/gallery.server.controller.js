@@ -116,58 +116,7 @@ exports.albumlist = function(req, res){
 			}else{
 				createAlbums(files, mainAlbum);
 			}
-
 		}
-
-		// function createAlbum(files, mainAlbum, dirs, parent, currentAlbumPath){
-
-		// 	var dir = dirs.shift();
-		// 	if (dir !== ''){
-		// 		currentAlbumPath += currentAlbumPath + '/' + dir;
-
-		// 		Album.findOne({name:dir}, function(err, album){
-		// 			if(err)
-		// 				handleError(err);
-		// 			if(!album){
-		// 				var newdbAlbum = new Album({
-		// 					name: dir,
-		// 					prettyName: decodeURIComponent(dir),
-		// 					description: '',
-		// 					path: currentAlbumPath,
-		// 					url: currentAlbumPath,
-		// 					parent: parent,
-		// 					childs:[],
-		// 					photos: []
-		// 				});
-
-		// 				newdbAlbum.save(function(err, album){
-		// 					if (err)
-		// 						handleError(err);
-		// 					Album.findByIdAndUpdate(parent, { $addToSet: {childs: album}}, function(err, parentAlbum){
-		// 						if (dirs.length !==0){
-		// 							createAlbum(files, mainAlbum, dirs, album, currentAlbumPath);
-		// 						}else{
-		// 							createAlbums(files, mainAlbum);
-		// 						}
-		// 					});
-		// 				});
-		// 			}else{
-		// 				Album.findByIdAndUpdate(parent, { $addToSet: {childs: album}}, function(err, parentAlbum){
-		// 				if (dirs.length !==0){
-		// 					createAlbum(files, mainAlbum, dirs, album, currentAlbumPath);
-		// 				}else{
-		// 					createAlbums(files,  mainAlbum);
-		// 				}
-		// 			});
-		// 			}
-
-		// 		});
-
-		// 	}else{
-		// 		createAlbums(files, mainAlbum);
-		// 	}
-
-		// }
 
 		function createAlbums(files, mainAlbum){
 			var file = files.shift();
@@ -253,35 +202,6 @@ function createPhoto(files, file){
 			});
 		}
 
-		// function createPhoto(files, file){
-
-		// 	var parentAlbumName = file.rootDir.split('/').pop();
-		// 	if (parentAlbumName === ''){
-		// 		parentAlbumName = mainAlbumName;
-		// 	}
-
-		// 	var filepath = path.join(shortPhotoDir, file.rootDir, file.name);
-		// 	var thumbPath = path.join(shortThumbDir, file.rootDir, file.name);
-		// 	var photoName = file.name.replace(/.[^\.]+$/, '');
-
-		// 	Album.where({name: parentAlbumName}).findOne(function(err, parent){
-		// 		var dbPhoto = new Photo({
-		// 			name: photoName,
-		// 			path: filepath,
-		// 			thumbPath: thumbPath,
-		// 			parent: parent
-		// 		});
-		// 		dbPhoto.save(function(err, photo){
-		// 			makeExif(photo, function(err, self){
-		// 			});
-		// 			Album.findByIdAndUpdate(parent, { $addToSet: {photos: photo}}, function(err, parentAlbum){
-		// 				console.log(parentAlbum);
-		// 				createPhotos(files);
-		// 			});
-		// 		});
-		// 	});
-		// }
-
 		function createPhotos(files){
 			var file = files.shift();
 				if(file){
@@ -357,7 +277,17 @@ exports.getAlbums = function(req, res){
 	function iterate(albums, albumsId){
 		var albumId = albumsId.shift();
 		Album.findById(albumId, function(err, album){
-			createThumb(albums, albumsId, album, album);
+			if (err)
+				handleError(err);
+			if(req.user && (req.user.roles.indexOf('admin') > -1||
+							album.users.indexOf(req.user._id)> -1)){
+				createThumb(albums, albumsId, album, album);
+			}else{
+				if(albumsId.length === 0)
+					res.json(sortByKey(albums, 'name'));
+				else
+					iterate(albums, albumsId);
+			}
 		});
 	}
 
@@ -485,6 +415,26 @@ exports.addUserPhoto = function(req, res){
 exports.delUserPhoto = function(req, res){
 	User.findOne({username: req.body.user.name}, function(err, user){
 		Photo.findByIdAndUpdate(req.body.photo._id, {$pull: {users: user._id}}, function(err, photo) {
+			if (err)
+				handleError(err);
+			res.json(user);
+		});
+	});
+};
+
+exports.addUserAlbum = function(req, res){
+	User.findOne({username: req.body.user.name}, function(err, user){
+		Album.findByIdAndUpdate(req.body.album._id, {$addToSet: {users: user}}, function(err, album) {
+			if (err)
+				handleError(err);
+			res.json(user);
+		});
+	});
+};
+
+exports.delUserAlbum = function(req, res){
+	User.findOne({username: req.body.user.name}, function(err, user){
+		Album.findByIdAndUpdate(req.body.album._id, {$pull: {users: user._id}}, function(err, album) {
 			if (err)
 				handleError(err);
 			res.json(user);

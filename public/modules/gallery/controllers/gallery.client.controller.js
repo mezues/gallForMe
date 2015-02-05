@@ -4,6 +4,7 @@ angular.module('gallery').controller('GalleryController',['$scope', '$stateParam
 	function($scope, $stateParams, $location, $http, $animate){
 		var albums;
 		$scope.photouser={};
+		$scope.albumuser={};
 		$scope.admin = false;
 		$scope.myInterval = 3000;
 		$scope.side = 'front';
@@ -20,23 +21,30 @@ document.location = 'data:application/csv;charset=utf-8,'+encodeURI(data);
     // hiddenElement.click();
 
 			});
-		}
+		};
 
 		$scope.toggle = function(photo) {
-			$scope.side = $scope.side == 'back' ? 'front' : 'back';
-		}
-
-		$scope.createDb = function() {
-			if(!albums){
-				$http.post('albumslist').success(function(data) {
-					albums = data;
-				});
-			}
+			$scope.side = $scope.side === 'back' ? 'front' : 'back';
 		};
 
 		$scope.findAlbums = function() {
-			$http.get('/albums/' + $stateParams.albumId).success(function(albums){
-				$scope.albums = albums;
+			$http.get('users').success(function(users) {
+				$scope.users = users;
+				$http.get('/albums/' + $stateParams.albumId).success(function(albums){
+					$scope.albums = albums;
+					for(var j = 0 ; j < $scope.albums.length; j++){
+						var album = $scope.albums[j];
+						$scope.albumuser[album._id] = {};
+						for(var i = 0 ; i < $scope.users.length; i++){
+							var user = $scope.users[i];
+							if (album.users.indexOf(user.id)>-1){
+								$scope.albumuser[album._id][user.id] = true;
+							}else{
+								$scope.albumuser[album._id][user.id] = false;
+							}
+						}
+				}
+				});
 			});
 		};
 
@@ -87,7 +95,6 @@ document.location = 'data:application/csv;charset=utf-8,'+encodeURI(data);
 		};
 
 		$scope.addImageToUser = function(user, photo) {
-			$scope.userPhotoMap = {photo: photo, user : user};
 			if (photo.users.indexOf(user.id)>-1){
 				$http.put('/photo/delUser', {user:user, photo:photo});
 				var i = photo.users.indexOf(user.id);
@@ -97,6 +104,19 @@ document.location = 'data:application/csv;charset=utf-8,'+encodeURI(data);
 			}else{
 				$http.put('/photo/addUser', {user:user, photo:photo});
 				photo.users.push(user.id);
+			}
+		};
+
+		$scope.addAlbumToUser = function(user, album) {
+			if (album.users.indexOf(user.id)>-1){
+				$http.put('/album/delUser', {user: user, album:album});
+				var i = album.users.indexOf(user.id);
+				if(i !== -1) {
+					album.users.splice(i, 1);
+				}
+			}else{
+				$http.put('/album/addUser', {user: user, album: album});
+				album.users.push(user.id);
 			}
 		};
 	}

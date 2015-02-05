@@ -11,7 +11,7 @@ angular.module('gallery').directive('flip', [ '$animate',
       };
       $attrs.$observe('flipSide', function(visibleSide) {
         visibleSide = visibleSide || 'front';
-        var otherSide = visibleSide == 'front' ? 'back' : 'front';
+        var otherSide = visibleSide === 'front' ? 'back' : 'front';
         $animate.removeClass(elements[otherSide], 'flip-visible');
         $animate.addClass(elements[visibleSide], 'flip-visible');
       });

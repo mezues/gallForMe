@@ -14,5 +14,10 @@ angular.module('gallery').config(['$stateProvider',
 			url: '/gallery/photo/:photoId',
 			templateUrl: 'modules/gallery/views/photo.client.view.html'
 		});
+		$stateProvider.
+		state('createDb', {
+			url: '/createDb',
+			templateUrl: 'modules/gallery/views/db.client.view.html'
+		});
 	}
 ]);
