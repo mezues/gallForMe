@@ -6,7 +6,6 @@ angular.module('weatherforcasts').directive('rotate',
         restrict: 'A',
         link: function (scope, element, attrs) {
             scope.$watch(attrs.degrees, function (rotateDegrees) {
-                console.log(rotateDegrees);
                 var r = 'rotate(' + rotateDegrees + 'deg)';
                 element.css({
                     '-moz-transform': r,
