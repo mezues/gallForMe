@@ -1,59 +1,37 @@
 <section data-ng-controller="WeatherforcastsController">
-<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
-	<div class="page-header">
-		<h1>Station {{station_id}}</h1>
-	</div>
 	<div data-ng-init="getWeather()">
-		<div class="row">
-			<div class="col-xs-6 col-md-4 text-center">
-				<img degrees='windAngle0' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
+		<div ng-repeat="weatherParam in weatherParams"  >
+			<div class="page-header">
+				<h1>Station {{weatherParam.station_id}}</h1>
 			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				<img degrees='windAngle1' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
-			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				<img degrees='windAngle2' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-6 col-md-4 text-center">
-				{{obsTime0}}
-			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				{{obsTime1}}
-			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				{{obsTime2}}
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-xs-6 col-md-4 text-center">
-				{{windSpeed0}}kt
+			<div class="row">
+				<div class="col-xs-6 col-md-4 text-center">
+					<img degrees='weatherParam.wind_dir_degrees' rotate src='/modules/weatherforcasts/img/compass-needle.png' />
+				</div>
 			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				{{windSpeed1}}kt
+			<div class="row">
+				<div class="col-xs-6 col-md-4 text-center">
+					{{weatherParam.observation_time}}
+				</div>
 			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				{{windSpeed2}}kt
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="col-xs-6 col-md-4 text-center">
-				{{temperature0}}°C
+			<div class="row">
+				<div class="col-xs-6 col-md-4 text-center">
+					{{weatherParam.wind_speed_kt}}kt
+				</div>
 			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				{{temperature1}}°C
-			</div>
-			<div class="col-xs-6 col-md-4 text-center">
-				{{temperature2}}°C
+
+			<div class="row">
+				<div class="col-xs-6 col-md-4 text-center">
+					{{weatherParam.temp_c}}°C
+				</div>
 			</div>
 		</div>
 	</div>
 
-    <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-         <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'">
-        </ui-gmap-markers>
-    </ui-gmap-google-map>
+	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
+		<ui-gmap-markers models="markers" coords="'self'" icon="'icon'">
+		</ui-gmap-markers>
+	</ui-gmap-google-map>
 </section>

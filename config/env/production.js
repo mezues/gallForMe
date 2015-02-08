@@ -21,9 +21,15 @@ module.exports = {
 				'public/lib/angular/angular.min.js',
 				'public/lib/angular-resource/angular-resource.min.js',
 				'public/lib/angular-animate/angular-animate.min.js',
+				'public/lib/angular-touch/angular-touch.min.js',
+				'public/lib/angular-sanitize/angular-sanitize.min.js',
 				'public/lib/angular-ui-router/release/angular-ui-router.min.js',
 				'public/lib/angular-ui-utils/ui-utils.min.js',
-				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js'
+				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
+				'//maps.googleapis.com/maps/api/js?sensor=false',
+				'public/lib/lodash/dist/lodash.underscore.min.js',
+				'public/lib/angular-google-maps/dist/angular-google-maps.min.js'
+
 			]
 		},
 		css: 'public/dist/application.min.css',

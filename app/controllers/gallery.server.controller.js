@@ -317,7 +317,7 @@ exports.getPhotos = function(req, res, next){
 				var mkdirp = require('../../config/fileUtils');
 				if (!fs.existsSync(tbDirPath)){
 					try {
-						mkdirp.sync(tbDirPath, '0755');
+						mkdirp.sync(tbDirPath, '0777');
 					} catch (err) {
 						handleError(err);
 					}
