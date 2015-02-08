@@ -14,6 +14,7 @@
 		"angular-ui-utils": "~0.1.1",
 		"angular-ui-router": "~0.2.11",
 		"angular-carousel": "*",
-		"angular-google-maps": "*"
+		"angular-google-maps": "*",
+		"angular-google-chart": "*"
 	}
 }

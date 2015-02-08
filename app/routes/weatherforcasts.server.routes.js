@@ -5,6 +5,7 @@ module.exports = function(app) {
 	var weatherforcasts = require('../../app/controllers/weatherforcasts.server.controller');
 
 	app.route('/weather/:airportId').get(weatherforcasts.weather);
+    	app.route('/weathers/:airportId').get(weatherforcasts.weathers);
 
 	// Finish by binding the Weatherforcast middleware
 	app.param('weatherforcastId', weatherforcasts.weatherforcastByID);

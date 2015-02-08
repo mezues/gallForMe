@@ -40,7 +40,7 @@ function ping (station_id, callback){
 				var jsonSkyCond = [];
 				if(rawSkyCond)
 					for(var i = 0 ; i < rawSkyCond.length ; i++){
-						jsonSkyCond.push(JSON.stringify(rawSkyCond[i]))
+						jsonSkyCond.push(JSON.stringify(rawSkyCond[i]));
 					}
 
 				weather.sky_condition = jsonSkyCond;
@@ -78,6 +78,13 @@ exports.weather = function(req, res) {
 		res.json(weather);
 	});
 };
+
+exports.weathers = function(req, res) {
+	Weatherforcast.find({'station_id': req.params.airportId}, function(err, weathers) {
+		res.json(weathers);
+	});
+};
+
 
 /**
  * Create a Weatherforcast

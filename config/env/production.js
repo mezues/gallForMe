@@ -28,7 +28,8 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.min.js',
 				'//maps.googleapis.com/maps/api/js?sensor=false',
 				'public/lib/lodash/dist/lodash.underscore.min.js',
-				'public/lib/angular-google-maps/dist/angular-google-maps.min.js'
+				'public/lib/angular-google-maps/dist/angular-google-maps.min.js',
+				'public/lib/angular-google-chart/ng-google-chart.js'
 
 			]
 		},

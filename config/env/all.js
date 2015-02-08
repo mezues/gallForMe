@@ -63,7 +63,8 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'//maps.googleapis.com/maps/api/js?sensor=false',
 				'public/lib/lodash/dist/lodash.underscore.js',
-				'public/lib/angular-google-maps/dist/angular-google-maps.js'
+				'public/lib/angular-google-maps/dist/angular-google-maps.js',
+				'public/lib/angular-google-chart/ng-google-chart.js'
 			]
 		},
 		css: [
