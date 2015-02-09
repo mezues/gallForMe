@@ -7,6 +7,7 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 
 		$scope. markers = [];
 		$scope.weatherParams = [];
+		$scope.windChart = {};
 
 		var airportId = ['LFRB', 'LFRL'];
 
@@ -37,8 +38,9 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 
 
 
-		function createChart(weathers){
+		function createChart(weathers, station_id){
 			var windRows = [];
+
 			for(var i = 0 ; i < weathers.length ; i++){
 				var windRow = {};
 				windRow.c = [
@@ -54,7 +56,7 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 				];
 				windRows.push(windRow);
 			}
-			$scope.windChart = {
+			$scope.windChart.station_id = {
 				'type': 'LineChart',
 				'displayed': true,
 				'data': {
@@ -109,127 +111,11 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 		}
 
 		$scope.getWeathers = function(station_id){
-			$http.get('/weathers/' + station_id).success(function(weathers) {
+			$http.get('/weathers/' + station_id).success(function(weathers, station_id) {
 				createChart(weathers);
 			});
 		};
 
-// 		$scope.chartObject = {
-//   "type": "AreaChart",
-//   "displayed": true,
-//   "data": {
-//     "cols": [
-//       {
-//         "id": "month",
-//         "label": "Month",
-//         "type": "string",
-//         "p": {}
-//       },
-//       {
-//         "id": "laptop-id",
-//         "label": "Laptop",
-//         "type": "number",
-//         "p": {}
-//       },
-//       {
-//         "id": "desktop-id",
-//         "label": "Desktop",
-//         "type": "number",
-//         "p": {}
-//       },
-//       {
-//         "id": "server-id",
-//         "label": "Server",
-//         "type": "number",
-//         "p": {}
-//       },
-//       {
-//         "id": "cost-id",
-//         "label": "Shipping",
-//         "type": "number"
-//       }
-//     ],
-//     "rows": [
-//       {
-//         "c": [
-//           {
-//             "v": "January"
-//           },
-//           {
-//             "v": 19,
-//             "f": "42 items"
-//           },
-//           {
-//             "v": 12,
-//             "f": "Ony 12 items"
-//           },
-//           {
-//             "v": 7,
-//             "f": "7 servers"
-//           },
-//           {
-//             "v": 4
-//           }
-//         ]
-//       },
-//       {
-//         "c": [
-//           {
-//             "v": "February"
-//           },
-//           {
-//             "v": 13
-//           },
-//           {
-//             "v": 1,
-//             "f": "1 unit (Out of stock this month)"
-//           },
-//           {
-//             "v": 12
-//           },
-//           {
-//             "v": 2
-//           }
-//         ]
-//       },
-//       {
-//         "c": [
-//           {
-//             "v": "March"
-//           },
-//           {
-//             "v": 24
-//           },
-//           {
-//             "v": 5
-//           },
-//           {
-//             "v": 11
-//           },
-//           {
-//             "v": 6
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   "options": {
-//     "title": "Sales per month",
-//     "isStacked": "true",
-//     "fill": 20,
-//     "displayExactValues": true,
-//     "vAxis": {
-//       "title": "Sales unit",
-//       "gridlines": {
-//         "count": 10
-//       }
-//     },
-//     "hAxis": {
-//       "title": "Date"
-//     }
-//   },
-//   "formatters": {}
-// }
 	}
 
 ]);
