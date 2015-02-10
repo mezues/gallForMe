@@ -45,19 +45,68 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 		];
 
 		 $scope.options = [
-		 	{ label: 'altim_in_hg', value: 'altim_in_hg'},
-		 	{ label: 'dewpoint_c', value: 'dewpoint_c'},
-		 	{ label: 'elevation_m', value: 'elevation_m'},
-		 	{ label: 'temp_c', value: 'temp_c'},
-		 	{ label: 'visibility_statute_mi', value: 'visibility_statute_mi'},
-		 	{ label: 'wind_dir_degrees', value: 'wind_dir_degrees'},
-		 	{ label: 'wind_speed_kt', value: 'wind_speed_kt'}
-			];
+		 	{
+		 		label: 'pression hPa',
+		 		value: 'altim_in_hg',
+		 		tranform : function(val){
+		 			return 33.7685 * val;
+		 		}
+		 	},
+		 	{
+		 		label: 'point de rosée °C',
+		 		value: 'dewpoint_c',
+		 		tranform : function(val){
+		 			return val;
+		 		}
+		 	},
+		 	{
+		 		label: 'altitude m',
+		 		value: 'elevation_m',
+		 		tranform : function(val){
+		 			return val;
+		 		}
+		 	},
+		 	{
+		 		label: 'température de lair',
+		 		value: 'temp_c',
+		 		tranform : function(val){
+		 			return val;
+		 		}
+		 	},
+		 	{
+		 		label: 'visibilité mille nautique',
+		 		value: 'visibility_statute_mi',
+		 		tranform : function(val){
+		 			return 0.8689762419006 * val;
+		 		}
+		 	},
+		 	{
+		 		label: 'direction vent °',
+		 		value: 'wind_dir_degrees',
+		 		tranform : function(val){
+		 			return val;
+		 		}
+		 	},
+		 	{
+		 		label: 'vitesse vent noeuds',
+		 		value: 'wind_speed_kt',
+		 		tranform : function(val){
+		 			return val;
+		 		}
+		 	}
+		];
 
 		$scope.weatherParam1 = $scope.options[1];
 		$scope.weatherParam2 = $scope.options[1];
 
-		$scope.map = { center: { latitude: 48.4, longitude: -4.30 }, zoom: 10 };
+		$scope.map = {
+			center: {
+				latitude: 48.4,
+				longitude: -4.30
+			},
+			zoom: 10,
+			bounds: {}
+		};
 
 		for(var i = 0 ; i < airportId.length ; i++){
 			$scope.markers.push({
@@ -70,6 +119,7 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 				events: {
 					click: function (marker, eventName, args) {
 						getWeather(marker.key);
+						marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
 					}
 				}
 			});
@@ -77,6 +127,9 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 
 		function createChart(){
 			var windRows = [];
+			var param1 = $scope.weatherParam1;
+			var param2 = $scope.weatherParam2;
+
 			for(var i = 0 ; i < weathers.length ; i++){
 				var windRow = {};
 				windRow.c = [
@@ -84,10 +137,10 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 						'v': weathers[i].observation_time
 					},
 					{
-						'v': weathers[i][$scope.weatherParam1.value]
+						'v': param1.tranform(weathers[i][param1.value])
 					},
 					{
-						'v': weathers[i][$scope.weatherParam2.value]
+						'v': param1.tranform(weathers[i][param2.value])
 					}
 				];
 				windRows.push(windRow);
@@ -105,13 +158,13 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 					},
 					{
 						'id': 'first_Param',
-						'label': $scope.weatherParam1.value,
+						'label': $scope.weatherParam1.label,
 						'type': 'number',
 						'p': {}
 					},
 					{
 						'id': 'second_Param',
-						'label': $scope.weatherParam2.value,
+						'label': $scope.weatherParam2.label,
 						'type': 'number',
 						'p': {}
 					}
@@ -129,8 +182,8 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 					},
 					'vAxes': {
 						// Adds titles to each axis.
-						0: {'title': $scope.weatherParam1.value},
-						1: {'title': $scope.weatherParam2.value}
+						0: {'title': $scope.weatherParam1.label},
+						1: {'title': $scope.weatherParam2.label}
 						},
 					'vAxis': {
 						'title': 'Sales unit',
@@ -149,7 +202,5 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 		$scope.ngCreateChart= function(){
 			createChart();
 		};
-
 	}
-
 ]);

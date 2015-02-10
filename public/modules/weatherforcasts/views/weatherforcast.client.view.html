@@ -23,10 +23,10 @@
 					<div google-chart chart="windChart" style="height:200px; width:100%;"></div>
 				</div>
 				<row>
-					<select ng-model="weatherParam1"
+					<select class="col-xs-6" ng-model="weatherParam1"
 					ng-options="opt as opt.label for opt in options" ng-change="ngCreateChart()">
 					</select>
-					<select ng-model="weatherParam2"
+					<select class="col-xs-6" ng-model="weatherParam2"
 						ng-options="opt as opt.label for opt in options" ng-change="ngCreateChart()">
 					</select>
 				</row>
@@ -34,9 +34,9 @@
 		</row>
 	</div>
 	<div class="col-xs-12 text-center">
-	<ui-gmap-google-map center='map.center' zoom='map.zoom'>
+	<ui-gmap-google-map center='map.center' zoom='map.zoom' bounds="map.bounds">
 	<div ng-repeat="marker in markers"  >
-		<ui-gmap-marker coords="marker.coords"  idkey="marker.id" events="marker.events">
+		<ui-gmap-marker doCluster="true" clusterOptions="clusterOptions" coords="marker.coords" idkey="marker.id" events="marker.events" icon="marker.icon" models="puMarkers">
 		</ui-gmap-marker>
 	</div>
 	</ui-gmap-google-map>
