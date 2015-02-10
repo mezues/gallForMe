@@ -54,24 +54,17 @@ function ping (station_id, callback){
 	});
 }
 
-function queryLFRBForecast (){
-	var station_id = 'LFRB';
-	ping(station_id, function (weather) {
-		var weatherDb = new Weatherforcast(weather);
-		weatherDb.save();
-	});
+function schedulledQueries(){
+	var station_ids = ['LFRB', 'LFRL', 'LFRJ', 'LFRQ'];
+	for(var i = 0; i < station_ids.length ; i++){
+		ping(station_ids[i], function (weather) {
+			var weatherDb = new Weatherforcast(weather);
+			weatherDb.save();
+		});
+	}
 }
 
-function queryLFRLForecast (){
-	var station_id = 'LFRL';
-	ping(station_id, function (weather) {
-		var weatherDb = new Weatherforcast(weather);
-		weatherDb.save();
-	});
-}
-setInterval(queryLFRBForecast, 30 * 60 * 1000);
-setInterval(queryLFRLForecast, 30 * 60 * 1000);
-
+setInterval(schedulledQueries, 30 * 60 * 1000);
 
 exports.weather = function(req, res) {
 	Weatherforcast.findOne({'station_id': req.params.airportId} , {}, { sort: { 'observation_time' : -1 } }, function(err, weather) {
