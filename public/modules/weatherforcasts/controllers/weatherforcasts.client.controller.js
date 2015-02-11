@@ -129,31 +129,30 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 			var windRows = [];
 			var param1 = $scope.weatherParam1;
 			var param2 = $scope.weatherParam2;
-
 			for(var i = 0 ; i < weathers.length ; i++){
 				var windRow = {};
 				windRow.c = [
 					{
-						'v': weathers[i].observation_time
+						'v': new Date(weathers[i].observation_time)
 					},
 					{
 						'v': param1.tranform(weathers[i][param1.value])
 					},
 					{
-						'v': param1.tranform(weathers[i][param2.value])
+						'v': param2.tranform(weathers[i][param2.value])
 					}
 				];
 				windRows.push(windRow);
 			}
 			$scope.windChart = {
-				'type': 'LineChart',
+				'type': 'AnnotationChart',
 				'displayed': true,
 				'data': {
 					'cols': [
 					{
 						'id': 'observation_time',
 						'label': 'Date',
-						'type': 'string',
+						'type': 'date',
 						'p': {}
 					},
 					{
@@ -173,8 +172,8 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 				},
 				'options': {
 					'title': 'Meteo',
-					'isStacked': 'true',
-					'fill': 20,
+					'isStacked': true,
+					'displayAnnotations': true,
 					'displayExactValues': true,
 					'series': {
 						0: {'targetAxisIndex': 0},
