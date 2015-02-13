@@ -201,5 +201,11 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 		$scope.ngCreateChart= function(){
 			createChart();
 		};
+		$scope.getBulletin = function(){
+			console.log("avanat");
+			$http.get('/weatherbulletin').success(function(bulletin) {
+				console.log("coucouc");
+			});
+		}
 	}
 ]);

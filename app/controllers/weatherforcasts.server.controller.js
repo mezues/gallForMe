@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
 	http = require('http'),
 	_ = require('lodash');
 var parseString = require('xml2js').parseString;
+var htmlparser = require("htmlparser2");
 
 function ping (station_id, callback){
 
@@ -78,94 +79,42 @@ exports.weathers = function(req, res) {
 	});
 };
 
+exports.marineBulletin = function(req, res) {
 
-/**
- * Create a Weatherforcast
- */
-exports.create = function(req, res) {
-	var weatherforcast = new Weatherforcast(req.body);
-	weatherforcast.user = req.user;
+	http.get('http://www.meteofrance.com/previsions-meteo-marine/bulletin?type=cote&zone=3', function(response) {
+		var body = '';
+		response.on('data', function(chunk) {
+			body += chunk;
+		});
+		response.on('end', function() {
+			// console.log(body);
+			var parser = new htmlparser.Parser({
+   //  onopentag: function(name, attribs){
+   //      if(name === "div" && attribs.class === "content"){
+   //          console.log("JS! Hooray!");
+   //      }
+   //  },
+   //  ontext: function(text){
+   //      console.log("-->", text);
+   //  },
+   //  onclosetag: function(tagname){
+   //      if(tagname === "script"){
+   //          console.log("That's it?!");
+   //      }
+   //  }
+}, {decodeEntities: true});
+			var coucou = parser.parseComplete(body);
+			console.log(coucou);
+	parser.end = function(data){
+		console.log(data);
+	}
+		;
 
-	weatherforcast.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcast);
-		}
+		});
+	}).on('error', function(e) {
+		console.log('Got error: ' + e.message);
 	});
-};
-
-/**
- * Show the current Weatherforcast
- */
-exports.read = function(req, res) {
-	res.jsonp(req.weatherforcast);
-};
-
-/**
- * Update a Weatherforcast
- */
-exports.update = function(req, res) {
-	var weatherforcast = req.weatherforcast ;
-
-	weatherforcast = _.extend(weatherforcast , req.body);
-
-	weatherforcast.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcast);
-		}
-	});
-};
-
-/**
- * Delete an Weatherforcast
- */
-exports.delete = function(req, res) {
-	var weatherforcast = req.weatherforcast ;
-
-	weatherforcast.remove(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcast);
-		}
-	});
-};
-
-/**
- * List of Weatherforcasts
- */
-exports.list = function(req, res) {
-	Weatherforcast.find().sort('-created').populate('user', 'displayName').exec(function(err, weatherforcasts) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcasts);
-		}
-	});
-};
-
-/**
- * Weatherforcast middleware
- */
-exports.weatherforcastByID = function(req, res, next, id) {
-	Weatherforcast.findById(id).populate('user', 'displayName').exec(function(err, weatherforcast) {
-		if (err) return next(err);
-		if (! weatherforcast) return next(new Error('Failed to load Weatherforcast ' + id));
-		req.weatherforcast = weatherforcast ;
-		next();
-	});
-};
+}
 
 /**
  * Weatherforcast authorization middleware
