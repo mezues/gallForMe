@@ -30,7 +30,6 @@ module.exports = {
 				'public/lib/lodash/dist/lodash.underscore.min.js',
 				'public/lib/angular-google-maps/dist/angular-google-maps.min.js',
 				'public/lib/angular-google-chart/ng-google-chart.js'
-
 			]
 		},
 		css: 'public/dist/application.min.css',
