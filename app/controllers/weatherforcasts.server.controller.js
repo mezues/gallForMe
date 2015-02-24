@@ -81,39 +81,17 @@ exports.weathers = function(req, res) {
 
 exports.marineBulletin = function(req, res) {
 
-	http.get('http://www.meteofrance.com/previsions-meteo-marine/bulletin?type=cote&zone=3', function(response) {
+	http.get('http://www.meteofrance.com/mf3-rpc-portlet/rest/bulletins/cote/3/bulletinsMarineMetropole', function(response) {
 		var body = '';
 		response.on('data', function(chunk) {
 			body += chunk;
 		});
 		response.on('end', function() {
-			// console.log(body);
-			var parser = new htmlparser.Parser({
-   //  onopentag: function(name, attribs){
-   //      if(name === "div" && attribs.class === "content"){
-   //          console.log("JS! Hooray!");
-   //      }
-   //  },
-   //  ontext: function(text){
-   //      console.log("-->", text);
-   //  },
-   //  onclosetag: function(tagname){
-   //      if(tagname === "script"){
-   //          console.log("That's it?!");
-   //      }
-   //  }
-}, {decodeEntities: true});
-			var coucou = parser.parseComplete(body);
-			console.log(coucou);
-	parser.end = function(data){
-		console.log(data);
-	}
-		;
-
-		});
+			res.send(body);
 	}).on('error', function(e) {
 		console.log('Got error: ' + e.message);
 	});
+});
 }
 
 /**

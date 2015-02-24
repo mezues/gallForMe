@@ -202,9 +202,21 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 			createChart();
 		};
 		$scope.getBulletin = function(){
-			console.log("avanat");
 			$http.get('/weatherbulletin').success(function(bulletin) {
-				console.log("coucouc");
+
+				var bull = {
+					titre: bulletin[0].titreBulletin,
+					info: bulletin[0].uniteBulletin,
+					special: bulletin[0].uniteBulletin,
+					pied: bulletin[0].piedBulletin,
+					begin: bulletin[0].dateDeBase,
+					end: bulletin[0].dateDeFin,
+					madeDate: bulletin[0].dateDeProduction,
+					zone: bulletin[0].zoneBulletin,
+					echeances: bulletin[0].echeance
+				};
+				console.log(bull)
+				$scope.bulletin = bull;
 			});
 		}
 	}

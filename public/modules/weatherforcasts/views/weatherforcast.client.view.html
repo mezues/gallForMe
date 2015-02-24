@@ -47,4 +47,34 @@
 	</div>
 
 
+					<li>{{bulletin.titre}}</li>
+					<li>{{bulletin.info}}</li>
+					<li>{{bulletin.special}}</li>
+					<li>{{bulletin.pied}}</li>
+					<li>{{bulletin.begin}}</li>
+					<li>{{bulletin.end}}</li>
+					<li>{{bulletin.madeDate}}</li>
+					<li>{{bulletin.zone}}</li>
+					<div ng-repeat="echeance in bulletin.echeances">
+					\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+						<div ng-repeat="(key, value) in echeance">
+						<div ng-hide="!value">
+						################################
+						{{key}}      {{value}}
+						##############################
+							<div ng-repeat="(key, value2) in value">
+							<div ng-hide="!value2">
+							<div ng-repeat="(key, value3) in value2">
+						<div ng-hide="!value3">
+						{{key}}      {{value3}}
+						</div>
+						</div>
+						</div>
+						</div>
+						</div>
+					</div>
+
+
+
+
 </section>
