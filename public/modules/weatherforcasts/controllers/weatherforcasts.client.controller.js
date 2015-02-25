@@ -107,7 +107,10 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 			zoom: 10,
 			bounds: {}
 		};
-
+		function retreaveWeather(marker, eventName, args){
+			getWeather(marker.key);
+			marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
+		}
 		for(var i = 0 ; i < airportId.length ; i++){
 			$scope.markers.push({
 				coords: {
@@ -117,10 +120,7 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 				title: airportId[i].name,
 				id: airportId[i].name,
 				events: {
-					click: function (marker, eventName, args) {
-						getWeather(marker.key);
-						marker.setIcon('https://www.google.com/mapfiles/marker_green.png');
-					}
+					click: retreaveWeather
 				}
 			});
 		}
@@ -206,6 +206,6 @@ angular.module('weatherforcasts').controller('WeatherforcastsController', ['$sco
 			$http.get('/weatherbulletin').success(function(bulletin) {
 				$scope.bulletin = bulletin[0];
 			});
-		}
+		};
 	}
 ]);

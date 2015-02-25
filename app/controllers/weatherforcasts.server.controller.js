@@ -9,7 +9,6 @@ var mongoose = require('mongoose'),
 	http = require('http'),
 	_ = require('lodash');
 var parseString = require('xml2js').parseString;
-var htmlparser = require("htmlparser2");
 
 function ping (station_id, callback){
 
@@ -55,13 +54,16 @@ function ping (station_id, callback){
 	});
 }
 
+function weather_cb(weather) {
+	var weatherDb = new Weatherforcast(weather);
+	weatherDb.save();
+}
+
+
 function schedulledQueries(){
 	var station_ids = ['LFRB', 'LFRL', 'LFRJ', 'LFRQ'];
 	for(var i = 0; i < station_ids.length ; i++){
-		ping(station_ids[i], function (weather) {
-			var weatherDb = new Weatherforcast(weather);
-			weatherDb.save();
-		});
+		ping(station_ids[i], weather_cb);
 	}
 }
 
@@ -88,11 +90,11 @@ exports.marineBulletin = function(req, res) {
 		});
 		response.on('end', function() {
 			res.send(body);
-	}).on('error', function(e) {
-		console.log('Got error: ' + e.message);
+		}).on('error', function(e) {
+			console.log('Got error: ' + e.message);
+		});
 	});
-});
-}
+};
 
 /**
  * Weatherforcast authorization middleware
