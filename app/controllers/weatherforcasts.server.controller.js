@@ -54,13 +54,16 @@ function ping (station_id, callback){
 	});
 }
 
+function weather_cb(weather) {
+	var weatherDb = new Weatherforcast(weather);
+	weatherDb.save();
+}
+
+
 function schedulledQueries(){
 	var station_ids = ['LFRB', 'LFRL', 'LFRJ', 'LFRQ'];
 	for(var i = 0; i < station_ids.length ; i++){
-		ping(station_ids[i], function (weather) {
-			var weatherDb = new Weatherforcast(weather);
-			weatherDb.save();
-		});
+		ping(station_ids[i], weather_cb);
 	}
 }
 
@@ -78,92 +81,18 @@ exports.weathers = function(req, res) {
 	});
 };
 
+exports.marineBulletin = function(req, res) {
 
-/**
- * Create a Weatherforcast
- */
-exports.create = function(req, res) {
-	var weatherforcast = new Weatherforcast(req.body);
-	weatherforcast.user = req.user;
-
-	weatherforcast.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcast);
-		}
-	});
-};
-
-/**
- * Show the current Weatherforcast
- */
-exports.read = function(req, res) {
-	res.jsonp(req.weatherforcast);
-};
-
-/**
- * Update a Weatherforcast
- */
-exports.update = function(req, res) {
-	var weatherforcast = req.weatherforcast ;
-
-	weatherforcast = _.extend(weatherforcast , req.body);
-
-	weatherforcast.save(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcast);
-		}
-	});
-};
-
-/**
- * Delete an Weatherforcast
- */
-exports.delete = function(req, res) {
-	var weatherforcast = req.weatherforcast ;
-
-	weatherforcast.remove(function(err) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcast);
-		}
-	});
-};
-
-/**
- * List of Weatherforcasts
- */
-exports.list = function(req, res) {
-	Weatherforcast.find().sort('-created').populate('user', 'displayName').exec(function(err, weatherforcasts) {
-		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			res.jsonp(weatherforcasts);
-		}
-	});
-};
-
-/**
- * Weatherforcast middleware
- */
-exports.weatherforcastByID = function(req, res, next, id) {
-	Weatherforcast.findById(id).populate('user', 'displayName').exec(function(err, weatherforcast) {
-		if (err) return next(err);
-		if (! weatherforcast) return next(new Error('Failed to load Weatherforcast ' + id));
-		req.weatherforcast = weatherforcast ;
-		next();
+	http.get('http://www.meteofrance.com/mf3-rpc-portlet/rest/bulletins/cote/3/bulletinsMarineMetropole', function(response) {
+		var body = '';
+		response.on('data', function(chunk) {
+			body += chunk;
+		});
+		response.on('end', function() {
+			res.send(body);
+		}).on('error', function(e) {
+			console.log('Got error: ' + e.message);
+		});
 	});
 };
 

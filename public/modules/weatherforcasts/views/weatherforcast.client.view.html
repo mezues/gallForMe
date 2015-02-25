@@ -1,4 +1,5 @@
 <section data-ng-controller="WeatherforcastsController">
+
 	<div ng-hide="!weatherParam.station_id">
 		<row>
 			<div class="col-xs-12 page-header">
@@ -34,13 +35,34 @@
 		</row>
 	</div>
 	<div class="col-xs-12 text-center">
-	<ui-gmap-google-map center='map.center' zoom='map.zoom' bounds="map.bounds">
-	<div ng-repeat="marker in markers"  >
-		<ui-gmap-marker doCluster="true" clusterOptions="clusterOptions" coords="marker.coords" idkey="marker.id" events="marker.events" icon="marker.icon" models="puMarkers">
-		</ui-gmap-marker>
+		<ui-gmap-google-map center='map.center' zoom='map.zoom' bounds="map.bounds">
+			<div ng-repeat="marker in markers"  >
+				<ui-gmap-marker doCluster="true" clusterOptions="clusterOptions" coords="marker.coords" idkey="marker.id" events="marker.events" icon="marker.icon" models="puMarkers">
+				</ui-gmap-marker>
+			</div>
+		</ui-gmap-google-map>
 	</div>
-	</ui-gmap-google-map>
-	</div>
+	<div class="col-xs-12" data-ng-init="getBulletin()">
 
+		<h3 >{{bulletin.titreBulletin}}</h3>
+
+		{{bulletin.uniteBulletin}}
+		<h4>{{bulletin.bulletinSpecial}}</h4>
+
+		<hr>
+		<hr>
+		<div ng-repeat="ech in bulletin.echeance">
+
+			<h4>{{ech.titreEcheance}}</h4>
+
+			<div ng-repeat="(key, value) in ech.region[0]">
+				<div ng-hide="key=='idRegion'">
+					{{value}}
+				</div>
+			</div>
+			<hr>
+		</div>
+		{{bulletin.pied}}
+	</div>
 
 </section>

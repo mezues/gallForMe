@@ -6,7 +6,8 @@ module.exports = function(app) {
 
 	app.route('/weather/:airportId').get(weatherforcasts.weather);
 	app.route('/weathers/:airportId').get(weatherforcasts.weathers);
+	app.route('/weatherbulletin').get(weatherforcasts.marineBulletin);
 
 	// Finish by binding the Weatherforcast middleware
-	app.param('weatherforcastId', weatherforcasts.weatherforcastByID);
+	// app.param('weatherforcastId', weatherforcasts.weatherforcastByID);
 };
