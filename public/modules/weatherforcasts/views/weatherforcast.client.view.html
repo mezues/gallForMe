@@ -1,9 +1,6 @@
 <section data-ng-controller="WeatherforcastsController">
-	<button ng-click="getBulletin()">
-	coucou
-	</button>
-	<div ng-hide="!weatherParam.station_id">
 
+	<div ng-hide="!weatherParam.station_id">
 		<row>
 			<div class="col-xs-12 page-header">
 				<h1>Station {{weatherParam.station_id}}</h1>
@@ -38,43 +35,34 @@
 		</row>
 	</div>
 	<div class="col-xs-12 text-center">
-	<ui-gmap-google-map center='map.center' zoom='map.zoom' bounds="map.bounds">
-	<div ng-repeat="marker in markers"  >
-		<ui-gmap-marker doCluster="true" clusterOptions="clusterOptions" coords="marker.coords" idkey="marker.id" events="marker.events" icon="marker.icon" models="puMarkers">
-		</ui-gmap-marker>
+		<ui-gmap-google-map center='map.center' zoom='map.zoom' bounds="map.bounds">
+			<div ng-repeat="marker in markers"  >
+				<ui-gmap-marker doCluster="true" clusterOptions="clusterOptions" coords="marker.coords" idkey="marker.id" events="marker.events" icon="marker.icon" models="puMarkers">
+				</ui-gmap-marker>
+			</div>
+		</ui-gmap-google-map>
 	</div>
-	</ui-gmap-google-map>
+	<div class="col-xs-12" data-ng-init="getBulletin()">
+
+		<h3 >{{bulletin.titreBulletin}}</h3>
+
+		{{bulletin.uniteBulletin}}
+		<h4>{{bulletin.bulletinSpecial}}</h4>
+
+		<hr>
+		<hr>
+		<div ng-repeat="ech in bulletin.echeance">
+
+			<h4>{{ech.titreEcheance}}</h4>
+
+			<div ng-repeat="(key, value) in ech.region[0]">
+				<div ng-hide="key=='idRegion'">
+					{{value}}
+				</div>
+			</div>
+			<hr>
+		</div>
+		{{bulletin.pied}}
 	</div>
-
-
-					<li>{{bulletin.titre}}</li>
-					<li>{{bulletin.info}}</li>
-					<li>{{bulletin.special}}</li>
-					<li>{{bulletin.pied}}</li>
-					<li>{{bulletin.begin}}</li>
-					<li>{{bulletin.end}}</li>
-					<li>{{bulletin.madeDate}}</li>
-					<li>{{bulletin.zone}}</li>
-					<div ng-repeat="echeance in bulletin.echeances">
-					\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-						<div ng-repeat="(key, value) in echeance">
-						<div ng-hide="!value">
-						################################
-						{{key}}      {{value}}
-						##############################
-							<div ng-repeat="(key, value2) in value">
-							<div ng-hide="!value2">
-							<div ng-repeat="(key, value3) in value2">
-						<div ng-hide="!value3">
-						{{key}}      {{value3}}
-						</div>
-						</div>
-						</div>
-						</div>
-						</div>
-					</div>
-
-
-
 
 </section>
